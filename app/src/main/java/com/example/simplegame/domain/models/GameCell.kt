@@ -15,14 +15,23 @@ class Player(
     var alive: Boolean = true,
     var exit: Boolean = false,
     var score: Int = 0,
-    var position: Int = 23
-): GameUnit
+    var position: Int = PLAYER_START_POSITION
+): GameUnit{
+    companion object{
+        const val PLAYER_START_POSITION = 22
+    }
+}
 
 class Enemy(
     val type: String,
     var step: Int = 1,
     var position: Int
-): GameUnit
+): GameUnit{
+    companion object{
+        const val SIREN_HEAD = "siren_head"
+        const val PIPE_HEAD = "pipe_head"
+    }
+}
 
 class GamePerc(val perc: String? = null){
     companion object{

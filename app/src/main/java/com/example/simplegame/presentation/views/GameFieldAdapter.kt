@@ -11,7 +11,7 @@ class GameFieldAdapter: RecyclerView.Adapter<GameFieldAdapterViewHolder>() {
     private val gameFieldCells = mutableListOf<GameCell>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameFieldAdapterViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.grid_cell, parent)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.grid_cell, parent, false)
         return GameFieldAdapterViewHolder(itemView)
     }
 
@@ -20,10 +20,10 @@ class GameFieldAdapter: RecyclerView.Adapter<GameFieldAdapterViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: GameFieldAdapterViewHolder, position: Int) {
-        TODO("Not yet implemented")
+
     }
 
     fun initGameField(field: List<GameCell>){
-        field.map { gameFieldCells.add(it) }
+        field.forEach{ gameFieldCells.add(it) }
     }
 }
