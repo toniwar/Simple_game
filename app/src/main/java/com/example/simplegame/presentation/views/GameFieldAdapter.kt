@@ -8,6 +8,8 @@ import com.example.simplegame.domain.models.GameCell
 
 class GameFieldAdapter: RecyclerView.Adapter<GameFieldAdapterViewHolder>() {
 
+    var cellWidth: Int? = null
+
     private val gameFieldCells = mutableListOf<GameCell>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameFieldAdapterViewHolder {
@@ -20,10 +22,15 @@ class GameFieldAdapter: RecyclerView.Adapter<GameFieldAdapterViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: GameFieldAdapterViewHolder, position: Int) {
+        holder.binds(cellWidth, gameFieldCells[position])
+
 
     }
 
     fun initGameField(field: List<GameCell>){
         field.forEach{ gameFieldCells.add(it) }
     }
+
+
+
 }

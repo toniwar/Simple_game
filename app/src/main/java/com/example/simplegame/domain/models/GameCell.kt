@@ -2,9 +2,9 @@ package com.example.simplegame.domain.models
 
 sealed interface GameCell
 
-class EmptyCell(gamePerc: GamePerc) : GameCell
+class EmptyCell(val gamePerc: GamePerc) : GameCell
 
-class NotEmptyCell(unit: GameUnit): GameCell
+class NotEmptyCell(val unit: GameUnit): GameCell
 
 
 sealed interface GameUnit
