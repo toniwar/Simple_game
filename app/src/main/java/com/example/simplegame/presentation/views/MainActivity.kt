@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.simplegame.R
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -12,4 +13,6 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.main_layout, GameWindow())
             .commit()
     }
+
+
 }

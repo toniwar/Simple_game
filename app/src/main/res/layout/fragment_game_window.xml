@@ -6,16 +6,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.views.GameWindow">
 
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/game_grid"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:itemCount="25"
-      tools:listitem="@layout/grid_cell" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/game_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@color/design_default_color_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
+
+    <GridLayout
+        android:id="@+id/game_grid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:columnCount="5"
+        android:rowCount="5"
+        app:flow_horizontalAlign="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/game_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+    </GridLayout>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
