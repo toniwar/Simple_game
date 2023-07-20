@@ -5,8 +5,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.example.simplegame.R
 
-
-class PlayerView(
+class EnemyView(
     private val context: Context
 ): LinearLayout(context) {
 
@@ -18,7 +17,7 @@ class PlayerView(
     private fun initView(){
         inflate(context, R.layout.game_unit_view, this)
         val avatar = findViewById<ImageView>(R.id.image_container)
-        avatar.setImageResource(R.drawable.player)
+        avatar.setImageResource(R.drawable.siren)
         orientation = HORIZONTAL
 
     }

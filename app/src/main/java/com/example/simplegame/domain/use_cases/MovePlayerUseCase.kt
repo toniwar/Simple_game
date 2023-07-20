@@ -5,7 +5,7 @@ import kotlin.math.abs
 
 class MovePlayerUseCase {
     fun move(
-        user: Player,
+        player: Player,
         currentX: Int,
         currentY: Int,
         clickX: Int,
@@ -14,7 +14,7 @@ class MovePlayerUseCase {
         clickID: Int
 
     ): Boolean {
-        if (user.isPlayerTurn) {
+        if (player.isPlayerTurn) {
             if (currentY == clickY && abs(currentID - clickID) == 1) return true
             else if (currentY > clickY){
                 if(currentX == clickX && abs(currentID - clickID) == 5) return true

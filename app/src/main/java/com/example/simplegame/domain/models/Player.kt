@@ -11,8 +11,8 @@ class Player(
     var alive: Boolean = true,
     var exit: Boolean = false,
     var score: Int = 0,
-    var position: Int = PLAYER_START_POSITION,
-    var location: Point? = null,
+    override var position: Int = PLAYER_START_POSITION,
+    override var location: Point? = null,
     var isPlayerTurn: Boolean = true,
     val avatar: Int = R.drawable.player
 ): GameUnit{
