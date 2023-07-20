@@ -1,21 +1,28 @@
 package com.example.simplegame.presentation.views
 
-import android.graphics.Point
 import androidx.lifecycle.ViewModel
 import com.example.simplegame.data.GameRepositoryImpl
 import com.example.simplegame.domain.models.GameCell
+import com.example.simplegame.domain.models.GameUnit
 import com.example.simplegame.domain.use_cases.DownloadGameFieldUC
+import com.example.simplegame.domain.use_cases.PlayerUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class GameWindowViewModel: ViewModel() {
     private val gameField = mutableListOf<GameCell>()
+
+    private val _gameUnitState = MutableStateFlow<GameUnit?>(null)
+    val gameUnitState get() = _gameUnitState
+
     private val _state = MutableStateFlow<List<GameCell>>(gameField)
-    private val _playerLocation = MutableStateFlow<Point?>(null)
-    val playerLocation get() = _playerLocation
     val state get() = _state
+
+
     private val repository = GameRepositoryImpl()
     private val downloadGameFieldUC = DownloadGameFieldUC(repository)
+    private val playerUseCase = PlayerUseCase(repository)
     init {
+        setGameUnitState(playerUseCase.createNewPlayer())
         loadToState()
     }
 
@@ -23,8 +30,11 @@ class GameWindowViewModel: ViewModel() {
         _state.value = downloadGameFieldUC.downloadField()
     }
 
-    fun setPlayerPosition(pos: Point){
-        _playerLocation.value = pos
+
+
+    fun setGameUnitState(gameUnit: GameUnit){
+        _gameUnitState.value = gameUnit
+
     }
 
 

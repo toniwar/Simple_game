@@ -13,7 +13,9 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.simplegame.databinding.FragmentGameWindowBinding
+import com.example.simplegame.domain.models.Enemy
 import com.example.simplegame.domain.models.GameCell
+import com.example.simplegame.domain.models.Player
 import com.example.simplegame.domain.use_cases.MovePlayerUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,10 +25,12 @@ import kotlinx.coroutines.launch
 
 
 class GameWindow : Fragment() {
-    private val player by lazy { PlayerView(requireContext())}
+    private val playerView by lazy { PlayerView(requireContext())}
+    private lateinit var player: Player
+    private lateinit var enemy: Enemy
     private lateinit var viewModel: GameWindowViewModel
     private lateinit var params:LayoutParams
-    private var pos: Point? = null
+
     
     private val binding by lazy {
         FragmentGameWindowBinding.inflate(layoutInflater)
@@ -48,8 +52,8 @@ class GameWindow : Fragment() {
 
 
         mainScope.launch{
-            viewModel.state.collect{ list->
-                list.forEach{
+            viewModel.state.collect { list ->
+                list.forEach {
                     cells.add(it)
                 }
                 Log.d("Cells", cells.size.toString())
@@ -58,6 +62,7 @@ class GameWindow : Fragment() {
             }
 
         }
+
 
     }
 
@@ -70,31 +75,36 @@ class GameWindow : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        mainScope.launch {
+            viewModel.gameUnitState.collect{
+                it?.let {
+                    when (it) {
+                        is Player -> {
+                            player = it
+                            setPlayerState()
+                        }
+                        is Enemy -> enemy = it
+                    }
+
+                }
+
+            }
+        }
 
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        mainScope.launch {
-            viewModel.playerLocation.collect {
-                pos = it
-
-                if (pos == null) {
-                    delay(50)
-                    pos = getStartLocation()
-
-                }
-                viewModel.setPlayerPosition(pos!!)
-                createPlayer(params, pos!!.x, pos!!.y - 60)
-
-                Log.d("CellPos", "${pos!!.x}, ${pos!!.y}")
-            }
-
+    private suspend fun setPlayerState() {
+        if(player.location == null){
+            delay(50)
+            player.location = getStartLocation()
         }
+
+        val pos = player.location
+        createPlayerView(params, pos!!.x, pos.y -60)
+
     }
 
     private fun getStartLocation(): Point{
@@ -117,19 +127,19 @@ class GameWindow : Fragment() {
             binding.gameGrid.addView(cell)
             cell.setOnClickListener {
                 val clickLocation = it.getLocation()
-                val accessStep =movePlayerUseCase.move(player.user,
-                    pos!!.x,
-                    pos!!.y,
+                val accessStep =movePlayerUseCase.move(player,
+                    player.location!!.x,
+                    player.location!!.y,
                     clickLocation.x,
                     clickLocation.y,
-                    player.user.position,
+                    player.position,
                     it.id
                 )
                 if(accessStep){
-                    pos = clickLocation
-                    player.user.position = it.id
-                    movePlayer(pos!!.x, pos!!.y - 60)
-                    viewModel.setPlayerPosition(pos!!)
+                    player.location = clickLocation
+                    player.position = it.id
+                    movePlayerView(player.location!!.x, player.location!!.y - 60)
+                    viewModel.setGameUnitState(player)
                 }
 
             }
@@ -139,11 +149,11 @@ class GameWindow : Fragment() {
 
     }
 
-    private fun createPlayer(params: LayoutParams, playerPosX: Int, playerPosY: Int){
-        binding.root.removeView(player)
-        player.apply {
+    private fun createPlayerView(params: LayoutParams, playerPosX: Int, playerPosY: Int){
+        binding.root.removeView(playerView)
+        playerView.apply {
             if(layoutParams == null) layoutParams = params
-            binding.root.addView(player)
+            binding.root.addView(playerView)
             translationX = playerPosX.toFloat()
             translationY = playerPosY.toFloat()
 
@@ -151,8 +161,8 @@ class GameWindow : Fragment() {
 
     }
 
-    private fun movePlayer(playerPosX: Int, playerPosY: Int){
-        player.apply {
+    private fun movePlayerView(playerPosX: Int, playerPosY: Int){
+        playerView.apply {
             translationX = playerPosX.toFloat()
             translationY = playerPosY.toFloat()
         }
