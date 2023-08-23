@@ -9,10 +9,15 @@ import com.example.simplegame.domain.use_cases.EnemyUseCase
 import com.example.simplegame.domain.use_cases.PlayerUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import androidx.lifecycle.viewModelScope
+import com.example.simplegame.data.levels.Level1
+import com.example.simplegame.data.levels.Level2
+import com.example.simplegame.data.levels.Level3
 import com.example.simplegame.domain.models.Enemy
+import com.example.simplegame.domain.models.Level
 import com.example.simplegame.domain.models.Player
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class GameWindowViewModel: ViewModel() {
     private val gameField = mutableListOf<GameCell>()
@@ -32,15 +37,18 @@ class GameWindowViewModel: ViewModel() {
     private val playerUseCase = PlayerUseCase(repository)
     private val enemyUseCase = EnemyUseCase(repository)
     init {
-        viewModelScope.launch {
-            loadToState()
-            setGameUnitState(playerUseCase.createNewPlayer())
-            setGameUnitState(enemyUseCase.createNewEnemy())
-        }
+        refresh()
+
     }
 
     private fun loadToState(){
-        _state.value = downloadGameFieldUC.downloadField()
+        val level = when(Random.nextInt(3)){
+            0-> Level1()
+            1-> Level2()
+            else-> Level3()
+
+        }
+        _state.value = downloadGameFieldUC.downloadField(level)
     }
 
 
@@ -52,6 +60,14 @@ class GameWindowViewModel: ViewModel() {
         }
 
     }
+
+    fun refresh(){
+        loadToState()
+        setGameUnitState(playerUseCase.createNewPlayer())
+        setGameUnitState(enemyUseCase.createNewEnemy())
+    }
+
+
 
 
 }

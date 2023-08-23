@@ -1,12 +1,19 @@
 package com.example.simplegame.domain.models
 
+
 import android.graphics.Point
+
+interface Level{
+    val levelConfig:List<Int>
+}
 
 sealed interface GameCell
 
 object EmptyCell : GameCell
 
 object ExitCell : GameCell
+
+object Wall : GameCell
 
 class NotEmptyCell(val gamePerc: GamePerc): GameCell
 

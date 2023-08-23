@@ -1,22 +1,36 @@
 package com.example.simplegame.data
 
+
 import com.example.simplegame.domain.GameRepository
 import com.example.simplegame.domain.models.EmptyCell
 import com.example.simplegame.domain.models.Enemy
 import com.example.simplegame.domain.models.ExitCell
 import com.example.simplegame.domain.models.GameCell
+import com.example.simplegame.domain.models.Level
 import com.example.simplegame.domain.models.Player
-import kotlin.random.Random
-import kotlin.random.nextInt
+import com.example.simplegame.domain.models.Wall
+
 
 
 class GameRepositoryImpl: GameRepository {
-    override fun downloadGameField(): List<GameCell> {
-        val exitCellNumb = Random.nextInt(1..10)
+
+    private var enemyPos = 5
+    override fun downloadGameField(level: Level): List<GameCell> {
+
+
+
+
         val field = mutableListOf<GameCell>()
-        for (i in  0..24){
-            if(i == exitCellNumb)field.add(ExitCell)
-            else field.add(EmptyCell)
+        level.levelConfig.forEachIndexed { index, item ->
+            when (item) {
+                0 -> field.add(EmptyCell)
+                1 -> field.add(Wall)
+                2 -> {
+                    enemyPos = index+1
+                    field.add(EmptyCell)
+                }
+                3 -> field.add(ExitCell)
+            }
 
         }
         return field.toList()
@@ -27,7 +41,7 @@ class GameRepositoryImpl: GameRepository {
     }
 
     override fun createNewEnemy(): Enemy {
-       return Enemy(Enemy.SIREN_HEAD, position = Random.nextInt(1..10))
+       return Enemy(Enemy.SIREN_HEAD, position = enemyPos)
     }
 
     override fun downloadPlayer(): Player {

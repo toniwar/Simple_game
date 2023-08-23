@@ -5,10 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.simplegame.R
+import androidx.lifecycle.ViewModelProvider
+import com.example.simplegame.databinding.FragmentMainBinding
+import com.example.simplegame.presentation.view_models.MainViewModel
 
 
 class MainFragment : Fragment() {
+    private lateinit var mainVM: MainViewModel
+    private val binding by lazy {
+        FragmentMainBinding.inflate(layoutInflater)
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainVM = ViewModelProvider(requireActivity())[MainViewModel::class.java]
+
+    }
 
 
 
@@ -17,7 +30,15 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.newGameButton.setOnClickListener{
+            mainVM.sendData("Game")
+        }
     }
 
 

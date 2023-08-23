@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:background="@drawable/cell_drawable"
-        android:src="@drawable/ground_1"
+        android:src="@drawable/grass"
         />
 
 </merge>

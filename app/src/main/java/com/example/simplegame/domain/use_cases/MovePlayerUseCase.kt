@@ -1,6 +1,8 @@
 package com.example.simplegame.domain.use_cases
 
+import android.view.View
 import com.example.simplegame.domain.models.Player
+import com.example.simplegame.presentation.views.WallView
 import kotlin.math.abs
 
 class MovePlayerUseCase {
@@ -11,9 +13,12 @@ class MovePlayerUseCase {
         clickX: Int,
         clickY: Int,
         currentID: Int,
-        clickID: Int
+        view: View
 
     ): Boolean {
+        if(view is WallView) return false
+        val clickID = view.id
+
         if (player.isPlayerTurn) {
             if (currentY == clickY && abs(currentID - clickID) == 1) return true
             else if (currentY > clickY){

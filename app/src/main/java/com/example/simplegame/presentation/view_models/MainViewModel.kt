@@ -12,6 +12,8 @@ class MainViewModel: ViewModel() {
     private val _data = MutableLiveData<String>()
     val data: LiveData<String> get() = _data
 
+    var score = 0
+
 
     fun sendData(cmd: String){
         _data.value = cmd
