@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.simplegame.data.levels.Level1
 import com.example.simplegame.data.levels.Level2
 import com.example.simplegame.data.levels.Level3
+import com.example.simplegame.data.levels.Level4
 import com.example.simplegame.domain.models.Enemy
 import com.example.simplegame.domain.models.Level
 import com.example.simplegame.domain.models.Player
@@ -42,10 +43,11 @@ class GameWindowViewModel: ViewModel() {
     }
 
     private fun loadToState(){
-        val level = when(Random.nextInt(3)){
+        val level = when(Random.nextInt(4)){
             0-> Level1()
             1-> Level2()
-            else-> Level3()
+            2-> Level3()
+            else-> Level4()
 
         }
         _state.value = downloadGameFieldUC.downloadField(level)
